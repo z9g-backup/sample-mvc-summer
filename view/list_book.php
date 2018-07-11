@@ -22,7 +22,17 @@
                 <div class="col-md-12">
                     <form action="?action=search_book" method="post">
                         <div class="active-purple-4 mb-4 input-group">
+                            <?php
+                                if (empty($search_query)):
+                            ?>
                             <input class="form-control" type="text" name="query" placeholder="Search" aria-label="Search">
+                            <?php
+                                else:
+                            ?>
+                            <input class="form-control" type="text" name="query" placeholder="Search" aria-label="Search" value="<?php echo $search_query;?>">
+                            <?php
+                                endif;
+                            ?>
                             <div class="input-group-btn">
                                 <div class="btn-group" role="group">
                                     <button type="submit" class="btn btn-primary">

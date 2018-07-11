@@ -17,7 +17,7 @@
     
     switch ($action) {
         case 'search_book':
-            // include_once("../view/search_book.php");
+            // include_once("../view/search_book.php");//merge search_book with list_book view
             $search_query = filter_input(INPUT_POST, 'query');
             if (empty($search_query))
             {

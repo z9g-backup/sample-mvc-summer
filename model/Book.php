@@ -184,11 +184,11 @@ class Book{
     
     public static function searchBook($query){
         global $con;
-        $sql = "select * from book where concat(author, '' , production) like '%$query%'";
+        $sql = "select * from book where concat(name, '' , author, '' , production) like '%$query%'";
         $result = mysqli_query($con, $sql);
         $books = [];
         foreach ($result as $key=>$value) {
-            $book = new Book($value['id'],$value['name'],$value['author'],$value['publish_year'],$value['production']);
+            $book = new Book($value['id'], $value['name'], $value['author'], $value['publish_year'], $value['production']);
             $books[] = $book;
         }
         return $books;
