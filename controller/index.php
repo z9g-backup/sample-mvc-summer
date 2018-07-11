@@ -1,5 +1,5 @@
 <?php
-
+    ;
     include_once("../model/Book.php");
     $con = mysqli_connect("192.168.10.10","homestead","secret","mvc_sample");
 
@@ -16,20 +16,41 @@
     }
     
     switch ($action) {
+        case 'search_book':
+            // include_once("../view/search_book.php");
+            $search_query = filter_input(INPUT_POST, 'query');
+            if (empty($search_query))
+            {
+                header("Location: /");
+                break;
+            }
         case 'list_book':
             include_once("../view/list_book.php");
             break;
-        case 'add_book':
-            include_once("../view/add_book.php");
+        case 'add_form_book':
+            include_once("../view/add_form_book.php");
             break;
-        case 'search_book':
-            include_once("../view/search_book.php");
+        case 'update_form_book':
+            $preparedBook = Book::get(filter_input(INPUT_GET,'bookId'));
+            include_once("../view/add_form_book.php");      
+            break;
+        case 'add_book':
+            $book = new Book(0, $_POST['name'], $_POST['author'], $_POST['publishYear'], $_POST['production']);
+            Book::add($book);
+            header("Location: /");
             break;
         case 'update_book':
-            include_once("../view/update_book.php");      
-            break;      
+            $book = new Book($_POST['id'], $_POST['name'], $_POST['author'], $_POST['publishYear'], $_POST['production']);
+            Book::update($book);
+            header("Location: /");
+            break;        
+        case 'delete_book';
+            $bookId = filter_input(INPUT_GET, 'bookId');
+            Book::delete($bookId);
+            header("Location: /");
+            break;    
         default:
-            echo "aaa";    
+            echo "404 NOT FOUND";    
     }
 
 

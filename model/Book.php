@@ -150,19 +150,42 @@ class Book{
         return 0;
     }
 
-    public static function add($book)
+    public static function add(Book $book)
     {
         global $con;
-        $sql = "insert into book('name','author','publish_year','production') values 
-            ({$book->getName()},{$book->getAuthor()},{$book->getPublishYear()},{$book->getProduction()})";
-        $result = mysqli_query($con, $sql);    
+        $sql = "insert into book(name,author,publish_year,production) values 
+            ('{$book->getName()}','{$book->getAuthor()}',{$book->getPublishYear()},'{$book->getProduction()}')";
+        $result = mysqli_query($con, $sql);
+        if (!$result) {
+            echo mysqli_error($con);
+        } 
     }
 
+    public static function update(Book $book)
+    {
+        global $con;
+        $sql = "update book set name = '{$book->getName()}', author = '{$book->getAuthor()}', publish_year = {$book->getPublishYear()},
+                production = '{$book->getProduction()}' where id = {$book->getBookId()}";
+        $result = mysqli_query($con, $sql);
+        if (!$result) {
+            echo mysqli_error($con);
+        } 
+    }
+
+    public static function delete($idBook)
+    {
+        global $con;
+        $sql = "delete from book where id = $idBook";
+        $result = mysqli_query($con, $sql);
+        if (!$result) {
+            echo mysqli_error($con);
+        } 
+    }
+    
     public static function searchBook($query){
         global $con;
-        $sql = "select * from book where name like";
+        $sql = "select * from book where concat(author, '' , production) like '%$query%'";
         $result = mysqli_query($con, $sql);
-
         $books = [];
         foreach ($result as $key=>$value) {
             $book = new Book($value['id'],$value['name'],$value['author'],$value['publish_year'],$value['production']);
